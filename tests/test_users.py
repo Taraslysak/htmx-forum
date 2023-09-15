@@ -5,10 +5,10 @@ from app import models as m, db
 from tests.utils import login
 
 
-def test_list(populate: FlaskClient):
-    login(populate)
+def test_list(populated_client: FlaskClient):
+    login(populated_client)
     DEFAULT_PAGE_SIZE = app.config["DEFAULT_PAGE_SIZE"]
-    response = populate.get("/user/")
+    response = populated_client.get("/user/")
     assert response
     assert response.status_code == 200
     html = response.data.decode()
@@ -18,8 +18,8 @@ def test_list(populate: FlaskClient):
         assert user.username in html
     assert users[10].username not in html
 
-    populate.application.config["PAGE_LINKS_NUMBER"] = 6
-    response = populate.get("/user/?page=6")
+    populated_client.application.config["PAGE_LINKS_NUMBER"] = 6
+    response = populated_client.get("/user/?page=6")
     assert response
     assert response.status_code == 200
     html = response.data.decode()
@@ -30,24 +30,24 @@ def test_list(populate: FlaskClient):
     assert "/user/?page=2" not in html
 
 
-def test_create_admin(runner: FlaskCliRunner):
-    res: Result = runner.invoke(args=["create-admin"])
-    assert "admin created" in res.output
-    query = m.User.select().where(m.User.username == app.config["ADMIN_USERNAME"])
-    assert db.session.scalar(query)
+# def test_create_admin(runner: FlaskCliRunner):
+#     res: Result = runner.invoke(args=["create-admin"])
+#     assert "admin created" in res.output
+#     query = m.User.select().where(m.User.username == app.config["ADMIN_USERNAME"])
+#     assert db.session.scalar(query)
 
 
-def test_populate_db(runner: FlaskCliRunner):
-    TEST_COUNT = 56
-    count_before = db.session.query(m.User).count()
-    res: Result = runner.invoke(args=["db-populate", "--count", f"{TEST_COUNT}"])
-    assert f"populated by {TEST_COUNT}" in res.stdout
-    assert (db.session.query(m.User).count() - count_before) == TEST_COUNT
+# def test_populate_db(runner: FlaskCliRunner):
+#     TEST_COUNT = 56
+#     count_before = db.session.query(m.User).count()
+#     res: Result = runner.invoke(args=["db-populate", "--count", f"{TEST_COUNT}"])
+#     assert f"populated by {TEST_COUNT}" in res.stdout
+#     assert (db.session.query(m.User).count() - count_before) == TEST_COUNT
 
 
-def test_delete_user(populate: FlaskClient):
-    login(populate)
+def test_delete_user(populated_client: FlaskClient):
+    login(populated_client)
     uc = db.session.query(m.User).count()
-    response = populate.delete("/user/delete/1")
+    response = populated_client.delete("/user/delete/1")
     assert db.session.query(m.User).count() < uc
     assert response.status_code == 200

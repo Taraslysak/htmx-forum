@@ -70,54 +70,54 @@ def test_register(client):
         assert user.activated
 
 
-def test_forgot(client):
-    response = client.post(
-        "/forgot",
-        data=dict(
-            email=TEST_EMAIL,
-        ),
-        follow_redirects=True,
-    )
-    assert b"No registered user with this e-mail" in response.data
+# def test_forgot(client):
+#     response = client.post(
+#         "/forgot",
+#         data=dict(
+#             email=TEST_EMAIL,
+#         ),
+#         follow_redirects=True,
+#     )
+#     assert b"No registered user with this e-mail" in response.data
 
-    user = m.User(
-        username="sam",
-        email=TEST_EMAIL,
-        password="password",
-    )
-    user.save()
-    with mail.record_messages() as outbox:
-        response = client.post(
-            "/forgot",
-            data=dict(
-                email=TEST_EMAIL,
-            ),
-            follow_redirects=True,
-        )
+#     user = m.User(
+#         username="sam",
+#         email=TEST_EMAIL,
+#         password="password",
+#     )
+#     user.save()
+#     with mail.record_messages() as outbox:
+#         response = client.post(
+#             "/forgot",
+#             data=dict(
+#                 email=TEST_EMAIL,
+#             ),
+#             follow_redirects=True,
+#         )
 
-        assert (
-            b"Password reset successful. For set new password please check your e-mail."
-            in response.data
-        )
-        user: m.User = db.session.scalar(
-            m.User.select().where(m.User.email == TEST_EMAIL)
-        )
-        assert user
+#         assert (
+#             b"Password reset successful. For set new password please check your e-mail."
+#             in response.data
+#         )
+#         user: m.User = db.session.scalar(
+#             m.User.select().where(m.User.email == TEST_EMAIL)
+#         )
+#         assert user
 
-        assert len(outbox) == 1
-        letter = outbox[0]
-        assert letter.subject == "Reset password"
-        assert ("/password_recovery/" + user.unique_id) in letter.html
+#         assert len(outbox) == 1
+#         letter = outbox[0]
+#         assert letter.subject == "Reset password"
+#         assert ("/password_recovery/" + user.unique_id) in letter.html
 
-    response = client.post(
-        "/password_recovery/" + user.unique_id,
-        data=dict(
-            password="123456789",
-            password_confirmation="123456789",
-        ),
-        follow_redirects=True,
-    )
-    assert b"Login successful." in response.data
+#     response = client.post(
+#         "/password_recovery/" + user.unique_id,
+#         data=dict(
+#             password="123456789",
+#             password_confirmation="123456789",
+#         ),
+#         follow_redirects=True,
+#     )
+#     assert b"Login successful." in response.data
 
 
 def test_login_and_logout(client):

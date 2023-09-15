@@ -4,7 +4,7 @@ from flask.testing import FlaskClient
 
 from app import create_app, db
 from app import models as m
-from tests.utils import register
+from tests.utils import login, register
 
 
 @pytest.fixture()
@@ -28,6 +28,7 @@ def client(app: Flask):
         db.drop_all()
         db.create_all()
         register()
+        login(client)
 
         yield client
         db.drop_all()
@@ -44,7 +45,7 @@ def runner(app, client):
 
 
 @pytest.fixture
-def populate(client: FlaskClient):
+def populated_client(client: FlaskClient):
     NUM_TEST_USERS = 100
     for i in range(NUM_TEST_USERS):
         m.User(
@@ -52,5 +53,9 @@ def populate(client: FlaskClient):
             email=f"user{i+1}@mail.com",
             password="password",
         ).save(False)
+    NUM_TEST_ROOMS = 10
+    for i in range(NUM_TEST_ROOMS):
+        m.Room(name=f"Room_{i+1}", creator_id=i + 1).save(False)
     db.session.commit()
+
     yield client

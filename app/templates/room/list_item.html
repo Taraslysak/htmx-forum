@@ -1,0 +1,46 @@
+<div
+  class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 room-card hover:bg-gray-100 dark:hover:bg-gray-700">
+  <div class="flex flex-col items-center pb-4">
+    <h5
+      id="room-name-{{room.id}}"
+      class="mb-1 text-xl font-medium text-gray-900 dark:text-white room-name">
+      {{room.name}}
+    </h5>
+    <span class="text-sm text-gray-500 dark:text-gray-400"
+      >Created by: {{room.creator.username}}</span
+    >
+  </div>
+  <div class="flex justify-evenly">
+    <a
+      href="#"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 rounded-full focus:ring-blue-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >Join room</a
+    >
+
+    {% if current_user.id == room.creator.id%}
+    <button
+      type="button"
+      hx-target="#room-name-{{room.id}}"
+      hx-post="room/edit-form/{{room.id}}"
+      hx-swap="outerHTML"
+      hx-trigger="click"
+      class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+      Edit
+    </button>
+    <button
+      hx-delete="room/{{room.id}}"
+      hx-target="closest .room-card"
+      hx-swap="outerHTML"
+      hx-trigger="click"
+      type="button"
+      class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+      Delete
+    </button>
+    {% endif %}
+  </div>
+  <div class="flex justify-end p-2">
+    <span class="text-sm text-gray-500 dark:text-gray-400"
+      >Created at: {{room.created_at.strftime('%Y-%m-%d')}}</span
+    >
+  </div>
+</div>

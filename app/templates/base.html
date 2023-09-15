@@ -12,18 +12,21 @@
 
     <!-- styles -->
     <!-- prettier-ignore -->
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='css/styles.css') }}"
+      rel="stylesheet" />
     <!-- prettier-ignore -->
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
     <script>
       // On page load or when changing themes, best to add inline in `head` to avoid FOUC
       if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
+        localStorage.getItem('color-theme') === 'dark' ||
+        (!('color-theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
-        document.documentElement.classList.add("dark");
+        document.documentElement.classList.add('dark');
       } else {
-        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.remove('dark');
       }
     </script>
     <!-- prettier-ignore -->
@@ -74,9 +77,8 @@
 
     <!-- SideBar -->
     <!-- prettier-ignore -->
-    {% include 'sidebar.html' %}
 
-    <div class="sm:ml-64 mt-14 h-full overflow-x-scroll">
+    <div class="pt-20 px-4 h-screen overflow-x-scroll">
       <!-- Main Content -->
       {% block content %}{% endblock %}
     </div>
