@@ -28,6 +28,6 @@ RUN poetry add gunicorn
 
 COPY --chown=app:app . .
 
-EXPOSE 8000
+EXPOSE 80
 
 RUN chmod +x ./start_server.sh
