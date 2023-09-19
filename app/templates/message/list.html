@@ -1,0 +1,9 @@
+<div
+  id="message-list"
+  class="fflex flex-col space-y-2 p-4"
+  hx-get="{{url_for('message.get_messages_for_room', room_id=room.id)}}"
+  hx-swap="outerHTML show:bottom"
+  hx-trigger="load delay:3s">
+  {% for message in messages %} {% include 'message/list_item.html' %}
+  {%endfor%}
+</div>

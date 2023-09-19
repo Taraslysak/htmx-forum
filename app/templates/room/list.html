@@ -1,5 +1,8 @@
-<div class="pt-2 gap-2 flex flex-row flex-wrap" hx-get="room/?q={{q}}"" hx-swap="outerHTML" hx-trigger="load delay:20s" id="room-list">
-  {% for room in rooms %}
-    {% include 'room/list_item.html' %}
-  {%endfor%}
+<div
+  class="pt-2 gap-2 flex flex-row flex-wrap"
+  hx-get="room/?q={{q}}"
+  hx-swap="outerHTML"
+  hx-trigger="load delay:5s"
+  id="room-list">
+  {% for room in rooms %} {% include 'room/list_item.html' %} {%endfor%}
 </div>

@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+<h1
+  class="mb-1 text-xl font-medium text-gray-900 dark:text-white room-name pt-4 px-4">
+  Welcome to room: {{room.name}}
+</h1>
+<div class="flex-grow overflow-y-scroll mx-4">
+  {% include('message/list.html') %}
+</div>
+<form
+  hx-post="{{url_for('message.new_message', room_id=room.id)}}"
+  hx-target="#message-list"
+  hx-swap="beforeend show:#message-list:bottom"
+  class="p-4"
+  hx-on::after-request="this.reset()">
+  <label
+    for="new_message"
+    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+    >Type your message here</label
+  >
+  <div class="relative flex-1">
+    <input type="hidden" name="room_id" value="{{room.id}}" />
+    <input
+      type="text"
+      name="new_message"
+      id="new_message"
+      class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Type your message here"
+      required />
+    <button
+      type="submit"
+      class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Send
+    </button>
+  </div>
+</form>
+
+{%endblock %}

@@ -12,6 +12,8 @@ from .utils import ModelMixin
 if TYPE_CHECKING:
     from .user import User
 
+    # from .message import Message
+
 
 class Room(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
@@ -27,3 +29,4 @@ class Room(db.Model, ModelMixin):
     )
 
     creator: orm.Mapped["User"] = orm.relationship()
+    # messages: orm.Mapped[list["Message"]] = orm.relationship()
