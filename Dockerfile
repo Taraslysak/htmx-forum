@@ -27,4 +27,7 @@ RUN poetry install --no-dev --no-interaction --no-ansi
 RUN poetry add gunicorn
 
 COPY --chown=app:app . .
+
+EXPOSE 80
+
 RUN chmod +x ./start_server.sh
