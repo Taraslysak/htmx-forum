@@ -17,6 +17,7 @@ class BaseConfig(BaseSettings):
     WTF_CSRF_ENABLED: bool = False
 
     # Mail config
+    MAIL_SUPPRESS_SEND: bool = True
     MAIL_SERVER: str
     MAIL_PORT: int
     MAIL_USE_TLS: bool

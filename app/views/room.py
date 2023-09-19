@@ -68,23 +68,6 @@ def new_room():
     return render_template("room/list_item.html", room=room)
 
 
-@room_blueprint.route("/item_dropdown", methods=["GET"])
-@login_required
-def get_item_dropdown():
-    room_id = request.args.get("room_id", type=int, default=None)
-    room = db.session.scalar(m.Room.select().where(m.Room.id == room_id))
-
-    if not room:
-        return ""
-
-    log(log.INFO, "Got dropdown for room {%s} ", room.name)
-
-    return render_template(
-        "room/item_dropdown.html",
-        room=room,
-    )
-
-
 @room_blueprint.route("/<int:room_id>", methods=["DELETE"])
 @login_required
 def delete_room(room_id):
@@ -130,3 +113,15 @@ def update_room(room_id):
     log(log.INFO, "Updated room {%s} ", room.name)
 
     return render_template("room/list_item.html", room=room)
+
+
+@room_blueprint.route("/<int:room_id>", methods=["GET"])
+@login_required
+def get_room(room_id):
+    room = db.session.scalar(m.Room.select().where(m.Room.id == room_id))
+
+    if not room:
+        log(log.INFO, "GET failed. Room {%i} not found", room_id)
+        return ""
+
+    return render_template("room/chat/index.html", room=room)
