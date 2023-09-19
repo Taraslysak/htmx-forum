@@ -26,7 +26,7 @@ services:
       - 'traefik.enable=true'
       - 'traefik.http.routers.web.rule=Host("forum.simple2b.net")'
       - 'traefik.http.routers.web.entrypoints=websecure'
-      - 'traefik.http.routers.web.tls.certresolver=myresolver'
+      - 'traefik.http.routers.web.tls.certResolver=myresolver'
       - 'traefik.http.routers.web.tls=true'
 
   gate:
@@ -46,9 +46,9 @@ services:
       - '--entryPoints.web.address=:80'
       - '--certificatesResolvers.myresolver.acme.email=${ACME_EMAIL:-simle2b.info@gmail.com}'
       - '--certificatesResolvers.myresolver.acme.storage=/data/acme.json'
-      - '--certificatesresolvers.myresolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory'
-      - '--certificatesresolvers.myresolver.acme.httpchallenge=true'
-      - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
+      - '--certificatesResolvers.myresolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory'
+      - '--certificatesResolvers.myresolver.acme.httpchallenge=true'
+      - '--certificatesResolvers.myresolver.acme.httpchallenge.entrypoint=web'
       # Redirects http -> https
       - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
       - '--entrypoints.web.http.redirections.entrypoint.scheme=https'
